@@ -1,13 +1,13 @@
 # Create a Resource Group for the new Virtual Machines
 resource azurerm_resource_group main {
-  name     = "${var.projectPrefix}_rg"
+  name     = "$rg-{var.projectPrefix}"
   location = var.location
 }
 
 
 # Create Availability Set
 resource azurerm_availability_set avset {
-  name                         = "${var.projectPrefix}-avset"
+  name                         = "$avset-{var.projectPrefix}"
   location                     = azurerm_resource_group.main.location
   resource_group_name          = azurerm_resource_group.main.name
   platform_fault_domain_count  = 2
@@ -18,7 +18,7 @@ resource azurerm_availability_set avset {
 # Create Availability Set 2 only for 3 tier tho
 resource azurerm_availability_set avset2 {
   count                        = var.deploymentType == "three_tier" ? 1 : 0
-  name                         = "${var.projectPrefix}-avset-2"
+  name                         = "$avset-2{var.projectPrefix}"
   location                     = azurerm_resource_group.main.location
   resource_group_name          = azurerm_resource_group.main.name
   platform_fault_domain_count  = 2
@@ -28,7 +28,7 @@ resource azurerm_availability_set avset2 {
 
 # Create Azure LB
 resource azurerm_lb lb {
-  name                = "${var.projectPrefix}-alb"
+  name                = "$alb-{var.projectPrefix}"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   sku                 = "Standard"
